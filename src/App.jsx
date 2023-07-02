@@ -47,7 +47,6 @@ function App() {
             total += value.monthValue;
             value.total = total;
         })
-        console.log(plotData)
         return plotData;
     }, [entries])
     const handleClick = () => {
