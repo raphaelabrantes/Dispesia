@@ -4,20 +4,36 @@ import {
     Box,
     Button,
     Container,
-    Grid,
-
-    TextField
+    Grid, Slider,
+    Typography
 } from "@mui/material";
 
 import AddModal from "./components/AddModal";
-import {CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 
 
-const EntryComponent = ({entry}) => {
-    const {name, value} = entry;
+const EntryComponent = ({entry, setEntry, index}) => {
+    const handleChange = React.useCallback((
+        event,
+        newValue,
+        activeThumb,
+    ) => {
+        setEntry(parseInt(newValue), index);
+
+    }, [setEntry, index])
     return (
         <Grid item xs={6}>
-            <TextField id="outlined-basic" label={name} variant="outlined" value={value}></TextField>
+            <Typography variant="h5" display="block" gutterBottom>
+                {entry.name}:{entry.value}
+            </Typography>
+            <Slider
+                getAriaLabel={() => 'index' + index}
+                value={entry.value}
+                valueLabelDisplay="auto"
+                max={10000}
+                min={-10000}
+                onChange={handleChange}
+            />
         </Grid>
     )
 }
@@ -37,7 +53,7 @@ function App() {
             }
         });
         entries.forEach((entry) => {
-                const monthValue = parseInt(entry.value) *  (entry.positive ? 1: -1);
+                const monthValue = entry.value;
                 for (let i = 0; i < months; i++) {
                     plotData[i].monthValue += monthValue;
                 }
@@ -63,6 +79,13 @@ function App() {
         });
         setModal(false);
     }
+    const setEntry = React.useCallback((value, index) => {
+        let newValues = [...entries];
+        let item = {...newValues[index]};
+        item.value = value;
+        newValues[index] = item;
+        setEntries(newValues);
+    }, [setEntries, entries]);
 
     return (
         <Container maxWidth="sm">
@@ -74,8 +97,8 @@ function App() {
                     <CartesianGrid strokeDasharray="3 3"/>
                     <XAxis dataKey="month"/>
                     <YAxis/>
-                    <Tooltip />
-                    <Legend />
+                    <Tooltip/>
+                    <Legend/>
                     <Line type="monotone" dataKey="monthValue" stroke="#8884d8" activeDot={{r: 8}}/>
                     <Line type="monotone" dataKey="total" stroke="#505050" activeDot={{r: 8}}/>
                 </LineChart>
@@ -83,7 +106,7 @@ function App() {
                 <Grid container spacing={2} sx={{my: 4}}>
                     {
                         entries.map((entry, index) => {
-                            return <EntryComponent key={index} entry={entry}/>
+                            return (<EntryComponent key={index} entry={entry} setEntry={setEntry} index={index}/>)
                         })
                     }
                 </Grid>

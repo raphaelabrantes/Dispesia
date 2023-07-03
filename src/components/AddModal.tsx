@@ -28,7 +28,7 @@ const style = {
 };
 
 const AddModal = (modalInfo: ModalInfo) => {
-    const [value, setValue] = React.useState("1000");
+    const [value, setValue] = React.useState(1000);
     const [type, setType] = React.useState("Gasto");
     const [name, setName] = React.useState("");
 
@@ -37,8 +37,7 @@ const AddModal = (modalInfo: ModalInfo) => {
     }
 
     const onChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue((event.target as HTMLInputElement).value);
-
+        setValue(parseInt((event.target as HTMLInputElement).value));
     }
 
     const onChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,11 +97,11 @@ const AddModal = (modalInfo: ModalInfo) => {
                     </Grid>
                     <Grid item xs={12}>
                         <Button variant="contained" onClick={() => {
-                            const positive = type === "Lucro";
-                            modalInfo.handleSubmit({positive, value, name})
+                            const newValue = value * (type === "Lucro"? 1 : -1);
+                            modalInfo.handleSubmit({value, name})
                             setName("");
                             setType("Gasto");
-                            setValue("1000");
+                            setValue(1000);
                         }}>
                             Submit
                         </Button>

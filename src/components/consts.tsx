@@ -1,7 +1,9 @@
+
 export interface Entry {
-    positive: boolean,
-    value: string,
-    name?: string,
+    value: number,
+    name: string,
+
+
 }
 
 export type ModalInfo = {
