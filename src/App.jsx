@@ -4,39 +4,13 @@ import {
     Box,
     Button,
     Container,
-    Grid, Slider,
-    Typography
+    Grid
 } from "@mui/material";
 
 import AddModal from "./components/AddModal";
-import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
+import EntryComponent from "./components/EntryComponent";
+import CustomGraph from "./components/CustomGraph";
 
-
-const EntryComponent = ({entry, setEntry, index}) => {
-    const handleChange = React.useCallback((
-        event,
-        newValue,
-        activeThumb,
-    ) => {
-        setEntry(parseInt(newValue), index);
-
-    }, [setEntry, index])
-    return (
-        <Grid item xs={6}>
-            <Typography variant="h5" display="block" gutterBottom>
-                {entry.name}:{entry.value}
-            </Typography>
-            <Slider
-                getAriaLabel={() => 'index' + index}
-                value={entry.value}
-                valueLabelDisplay="auto"
-                max={10000}
-                min={-10000}
-                onChange={handleChange}
-            />
-        </Grid>
-    )
-}
 
 
 function App() {
@@ -92,17 +66,7 @@ function App() {
             <Box style={{itemAlign: "center", textAlign: "center"}}>
                 <AddModal open={modal} onClose={handleClose} handleSubmit={handleSubmit}></AddModal>
                 <Button sx={{mt: 1}} onClick={handleClick}> Add entrie</Button>
-                <LineChart
-                    width={600} height={300} data={data}>
-                    <CartesianGrid strokeDasharray="3 3"/>
-                    <XAxis dataKey="month"/>
-                    <YAxis/>
-                    <Tooltip/>
-                    <Legend/>
-                    <Line type="monotone" dataKey="monthValue" stroke="#8884d8" activeDot={{r: 8}}/>
-                    <Line type="monotone" dataKey="total" stroke="#505050" activeDot={{r: 8}}/>
-                </LineChart>
-
+                <CustomGraph data={data}></CustomGraph>
                 <Grid container spacing={2} sx={{my: 4}}>
                     {
                         entries.map((entry, index) => {
