@@ -4,7 +4,7 @@ import React from "react";
 const CustomGraph = ({data}) => {
     return (
         <LineChart
-            width={600} height={300} data={data}>
+            width={500} height={300} data={data}>
             <CartesianGrid strokeDasharray="3 3"/>
             <XAxis dataKey="month"/>
             <YAxis/>

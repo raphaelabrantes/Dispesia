@@ -30,6 +30,7 @@ const EntryComponent = ({entry, setEntry, index} : EntryComponentProps) => {
                 min={-10000}
                 onChange={handleChange}
             />
+            {entry.repetitions}
         </Grid>
     )
 }

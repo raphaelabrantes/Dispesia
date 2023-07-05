@@ -69,9 +69,7 @@ function App() {
                 <CustomGraph data={data}></CustomGraph>
                 <Grid container spacing={2} sx={{my: 4}}>
                     {
-                        entries.map((entry, index) => {
-                            return (<EntryComponent key={index} entry={entry} setEntry={setEntry} index={index}/>)
-                        })
+                        entries.map((entry, index) =>  (<EntryComponent key={index} entry={entry} setEntry={setEntry} index={index}/>))
                     }
                 </Grid>
             </Box>

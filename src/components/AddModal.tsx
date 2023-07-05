@@ -6,12 +6,12 @@ import {
     FormControl,
     FormControlLabel,
     FormLabel, Grid,
-    InputAdornment,
-    Modal, Radio,
-    RadioGroup,
+    InputAdornment, InputLabel, MenuItem,
+    Modal, OutlinedInput, Radio,
+    RadioGroup, Select, SelectChangeEvent,
     TextField
 } from "@mui/material";
-import {ModalInfo} from "./consts";
+import {ModalInfo, Repetition} from "./consts";
 
 
 const style = {
@@ -31,6 +31,7 @@ const AddModal = (modalInfo: ModalInfo) => {
     const [value, setValue] = React.useState(1000);
     const [type, setType] = React.useState("Gasto");
     const [name, setName] = React.useState("");
+    const [repetitions, setRepetition] = React.useState([Repetition[0]]);
 
     const onChangeType = (event: React.ChangeEvent<HTMLInputElement>) => {
         setType((event.target as HTMLInputElement).value);
@@ -44,6 +45,13 @@ const AddModal = (modalInfo: ModalInfo) => {
         setName((event.target as HTMLInputElement).value);
 
     }
+
+    const handleChange = (event: SelectChangeEvent<string[]>) => {
+        const {
+            target: { value },
+        } = event;
+        setRepetition( typeof value === "string"? value.split(",") : value);
+    };
 
     const icon = type === "Lucro" ? (<AddIcon></AddIcon>) : (<RemoveIcon></RemoveIcon>);
     return (
@@ -96,9 +104,30 @@ const AddModal = (modalInfo: ModalInfo) => {
                         </FormControl>
                     </Grid>
                     <Grid item xs={12}>
+                        <FormControl sx={{ m: 1, width: 300 }}>
+                            <InputLabel id="demo-multiple-name-label">Repetition</InputLabel>
+                            <Select
+                                labelId="demo-multiple-name-label"
+                                id="demo-multiple-name"
+                                multiple
+                                value={repetitions}
+                                onChange={handleChange}
+                                input={<OutlinedInput label="Repetition" />} >
+                                {Repetition.map((name) => (
+                                    <MenuItem
+                                        key={name}
+                                        value={name}
+                                    >
+                                        {name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
                         <Button variant="contained" onClick={() => {
                             const newValue = value * (type === "Lucro"? 1 : -1);
-                            modalInfo.handleSubmit({value, name})
+                            modalInfo.handleSubmit({value:newValue, name, repetitions})
                             setName("");
                             setType("Gasto");
                             setValue(1000);
