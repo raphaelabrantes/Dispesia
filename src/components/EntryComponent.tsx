@@ -26,8 +26,8 @@ const EntryComponent = ({entry, setEntry, index} : EntryComponentProps) => {
                 getAriaLabel={() => 'index' + index}
                 value={entry.value}
                 valueLabelDisplay="auto"
-                max={10000}
-                min={-10000}
+                max={100000}
+                min={-100000}
                 onChange={handleChange}
             />
             {entry.repetitions}

@@ -1,12 +1,17 @@
-export const Repetition =  ["Once A Month",
-    "Every Monday",
-    "Every Tuesday",
-    "Every Wednesday" ,
-    "Every Thursday",
-    "Every Friday",
-    "Every Saturday",
-    "Every Sunday",
-    "Daily"]
+
+export enum Repetitions {
+    OnceAMonth = "Once A Month",
+    EveryMonday = "Every Monday",
+    EveryTuesday =  "EveryTuesday",
+    EveryWednesday = "Every Wednesday",
+    EveryThursday = "Every Thursday",
+    EveryFriday = "Every Friday" ,
+    EverySaturday = "Every Saturday" ,
+    EverySunday = "Every Sunday",
+    Daily = "Daily"
+}
+
+export const Repetition =  Object.values(Repetitions).map((value) => value.toString());
 
 
 export interface Entry {

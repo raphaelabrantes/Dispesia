@@ -10,8 +10,19 @@ import {
 import AddModal from "./components/AddModal";
 import EntryComponent from "./components/EntryComponent";
 import CustomGraph from "./components/CustomGraph";
+import {Repetitions} from "./components/consts";
 
-
+function getWeekDayInMonth(year, month, weekDay) {
+    const date = new Date(year, month, 1);
+    let count = 0;
+    while (date.getMonth() === month) {
+        if (date.getDay() === weekDay) {
+            count++;
+        }
+        date.setDate(date.getDate() + 1);
+    }
+    return count;
+}
 
 function App() {
     const [entries, setEntries] = React.useState([]);
@@ -27,12 +38,45 @@ function App() {
             }
         });
         entries.forEach((entry) => {
-                const monthValue = entry.value;
-                for (let i = 0; i < months; i++) {
+            const currentDate = new Date();
+            const monthValue = entry.value;
+            for (let i = 0; i < months; i++) {
+                if (entry.repetitions.includes(Repetitions.OnceAMonth.toString())) {
                     plotData[i].monthValue += monthValue;
                 }
+                if (entry.repetitions.includes(Repetitions.EveryMonday.toString())) {
+                    const times = getWeekDayInMonth(currentDate.getFullYear(), currentDate.getMonth() + i, 0);
+                    plotData[i].monthValue += times * monthValue;
+                }
+                if (entry.repetitions.includes(Repetitions.EveryTuesday.toString())) {
+                    const times = getWeekDayInMonth(currentDate.getFullYear(), currentDate.getMonth() + i, 1);
+                    plotData[i].monthValue += times * monthValue;
+                }
+                if (entry.repetitions.includes(Repetitions.EveryWednesday.toString())) {
+                    const times = getWeekDayInMonth(currentDate.getFullYear(), currentDate.getMonth() + i, 2);
+                    plotData[i].monthValue += times * monthValue;
+                }
+                if (entry.repetitions.includes(Repetitions.EveryThursday.toString())) {
+                    const times = getWeekDayInMonth(currentDate.getFullYear(), currentDate.getMonth() + i, 3);
+                    plotData[i].monthValue += times * monthValue;
+                }
+                if (entry.repetitions.includes(Repetitions.EveryFriday.toString())) {
+                    const times = getWeekDayInMonth(currentDate.getFullYear(), currentDate.getMonth() + i, 4);
+                    plotData[i].monthValue += times * monthValue;
+                }
+                if (entry.repetitions.includes(Repetitions.EverySaturday.toString())) {
+                    const times = getWeekDayInMonth(currentDate.getFullYear(), currentDate.getMonth() + i, 5);
+                    plotData[i].monthValue += times * monthValue;
+                }
+                if (entry.repetitions.includes(Repetitions.EverySunday.toString())) {
+                    const times = getWeekDayInMonth(currentDate.getFullYear(), currentDate.getMonth() + i, 6);
+                    plotData[i].monthValue += times * monthValue;
+                } if (entry.repetitions.includes(Repetitions.Daily.toString())) {
+                    const times = new Date(currentDate.getFullYear(), currentDate.getMonth() + i, 0).getDate();
+                    plotData[i].monthValue += times * monthValue;
+                }
             }
-        )
+        })
         plotData.forEach((value, index) => {
             total += value.monthValue;
             value.total = total;
@@ -69,7 +113,8 @@ function App() {
                 <CustomGraph data={data}></CustomGraph>
                 <Grid container spacing={2} sx={{my: 4}}>
                     {
-                        entries.map((entry, index) =>  (<EntryComponent key={index} entry={entry} setEntry={setEntry} index={index}/>))
+                        entries.map((entry, index) => (
+                            <EntryComponent key={index} entry={entry} setEntry={setEntry} index={index}/>))
                     }
                 </Grid>
             </Box>

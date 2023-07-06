@@ -29,7 +29,7 @@ const style = {
 
 const AddModal = (modalInfo: ModalInfo) => {
     const [value, setValue] = React.useState(1000);
-    const [type, setType] = React.useState("Gasto");
+    const [type, setType] = React.useState("Loss");
     const [name, setName] = React.useState("");
     const [repetitions, setRepetition] = React.useState([Repetition[0]]);
 
@@ -53,19 +53,22 @@ const AddModal = (modalInfo: ModalInfo) => {
         setRepetition( typeof value === "string"? value.split(",") : value);
     };
 
-    const icon = type === "Lucro" ? (<AddIcon></AddIcon>) : (<RemoveIcon></RemoveIcon>);
+    const icon = type === "Profit" ? (<AddIcon></AddIcon>) : (<RemoveIcon></RemoveIcon>);
     return (
         <Modal
             open={modalInfo.open}
-            onClose={modalInfo.onClose}
+            onClose={() => {
+                setName("");
+                setType("Loss");
+                setValue(1000);
+                setRepetition([Repetition[0]]);
+                modalInfo.onClose();
+            }}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
                 <Grid container spacing={2} sx={{my: 4}}>
-                    <Grid item xs={12}>
-                        Hello
-                    </Grid>
                     <Grid item xs={6}>
                         <TextField id="outlined-basic"
                                    label="Name"
@@ -98,8 +101,8 @@ const AddModal = (modalInfo: ModalInfo) => {
                                 value={type}
                                 onChange={onChangeType}
                             >
-                                <FormControlLabel value={"Lucro"} control={<Radio/>} label="Lucro"/>
-                                <FormControlLabel value={"Gasto"} control={<Radio/>} label="Gasto"/>
+                                <FormControlLabel value={"Profit"} control={<Radio/>} label="Profit"/>
+                                <FormControlLabel value={"Loss"} control={<Radio/>} label="Loss"/>
                             </RadioGroup>
                         </FormControl>
                     </Grid>
@@ -126,11 +129,13 @@ const AddModal = (modalInfo: ModalInfo) => {
                     </Grid>
                     <Grid item xs={12}>
                         <Button variant="contained" onClick={() => {
-                            const newValue = value * (type === "Lucro"? 1 : -1);
+                            const newValue = value * (type === "Profit"? 1 : -1);
                             modalInfo.handleSubmit({value:newValue, name, repetitions})
                             setName("");
-                            setType("Gasto");
+                            setType("Loss");
                             setValue(1000);
+                           setRepetition([Repetition[0]]);
+
                         }}>
                             Submit
                         </Button>
