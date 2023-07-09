@@ -2,7 +2,7 @@
 export enum Repetitions {
     OnceAMonth = "Once A Month",
     EveryMonday = "Every Monday",
-    EveryTuesday =  "EveryTuesday",
+    EveryTuesday =  "Every Tuesday",
     EveryWednesday = "Every Wednesday",
     EveryThursday = "Every Thursday",
     EveryFriday = "Every Friday" ,
