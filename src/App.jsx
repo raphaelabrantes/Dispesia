@@ -97,11 +97,9 @@ function App() {
         });
         setModal(false);
     }
-    const setEntry = React.useCallback((value, index) => {
+    const setEntry = React.useCallback((entry, index) => {
         let newValues = [...entries];
-        let item = {...newValues[index]};
-        item.value = value;
-        newValues[index] = item;
+        newValues[index] = entry;
         setEntries(newValues);
     }, [setEntries, entries]);
 

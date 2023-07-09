@@ -28,10 +28,12 @@ const style = {
 };
 
 const AddModal = (modalInfo: ModalInfo) => {
-    const [value, setValue] = React.useState(1000);
-    const [type, setType] = React.useState("Loss");
-    const [name, setName] = React.useState("");
-    const [repetitions, setRepetition] = React.useState([Repetition[0]]);
+    const entry = modalInfo.entry;
+    const tempValue = entry?.value || 1000;
+    const [value, setValue] = React.useState( Math.abs(tempValue));
+    const [type, setType] = React.useState(tempValue < 0 ? "Loss": "Profit");
+    const [name, setName] = React.useState(entry?.name|| "");
+    const [repetitions, setRepetition] = React.useState(entry?.repetitions || [Repetition[0]]);
 
     const onChangeType = (event: React.ChangeEvent<HTMLInputElement>) => {
         setType((event.target as HTMLInputElement).value);
@@ -58,10 +60,6 @@ const AddModal = (modalInfo: ModalInfo) => {
         <Modal
             open={modalInfo.open}
             onClose={() => {
-                setName("");
-                setType("Loss");
-                setValue(1000);
-                setRepetition([Repetition[0]]);
                 modalInfo.onClose();
             }}
             aria-labelledby="modal-modal-title"
@@ -131,11 +129,6 @@ const AddModal = (modalInfo: ModalInfo) => {
                         <Button variant="contained" onClick={() => {
                             const newValue = value * (type === "Profit"? 1 : -1);
                             modalInfo.handleSubmit({value:newValue, name, repetitions})
-                            setName("");
-                            setType("Loss");
-                            setValue(1000);
-                           setRepetition([Repetition[0]]);
-
                         }}>
                             Submit
                         </Button>

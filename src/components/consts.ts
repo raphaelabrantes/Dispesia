@@ -24,4 +24,6 @@ export type ModalInfo = {
     open: boolean,
     onClose: () => void,
     handleSubmit: (entry: Entry) => void;
+    editMode?: boolean
+    entry?: Entry
 }

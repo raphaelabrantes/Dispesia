@@ -1,33 +1,45 @@
 import React from "react";
-import {Grid, IconButton, Slider, Typography} from "@mui/material";
+import {Grid, IconButton, Typography} from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import {Entry} from "./consts";
+import AddModal from "./AddModal";
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 
 type EntryComponentProps = {
     entry: Entry,
     index: number,
-    setEntry(value: number | number[], index: number): void,
+    setEntry(entry: Entry, index: number): void,
     removeEntry(index: number): void,
 
 }
 const EntryComponent = ({entry, setEntry, index, removeEntry}: EntryComponentProps) => {
+    const [isEdit, setIsEdit] = React.useState(false);
+
     const handleChange = React.useCallback((
-        event: Event,
-        newValue: number | number[],
-        activeThumb: number,
+        entry: Entry,
     ) => {
-        setEntry(newValue, index);
+        setEntry(entry, index);
+        setIsEdit(false);
 
     }, [setEntry, index])
-
     const handleRemove = ()  => {
         removeEntry(index);
     }
+
+    const handleClose = () => {
+        setIsEdit(false);
+    }
     return (
         <Grid item xs={6}>
-            <Typography variant="h5" display="block" gutterBottom onClick={handleRemove}>
-                <IconButton>
+            <AddModal open={isEdit} onClose={handleClose} handleSubmit={handleChange} entry={entry}/>
+            <Typography variant="h5" display="block" gutterBottom>
+                <IconButton onClick={handleRemove}>
                     <ClearIcon></ClearIcon>
+                </IconButton>
+                <IconButton onClick={() => {
+                    setIsEdit(true);
+                }}>
+                    <EditTwoToneIcon/>
                 </IconButton>
                 {entry.name}:{entry.value}
             </Typography>
