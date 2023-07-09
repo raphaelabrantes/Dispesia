@@ -105,6 +105,11 @@ function App() {
         setEntries(newValues);
     }, [setEntries, entries]);
 
+    const removeEntry = React.useCallback((index) => {
+        let values = [...entries];
+        values.splice(index, 1);
+        setEntries(values);
+    }, [setEntries, entries])
     return (
         <Container maxWidth="sm">
             <Box style={{itemAlign: "center", textAlign: "center"}}>
@@ -114,7 +119,7 @@ function App() {
                 <Grid container spacing={2} sx={{my: 4}}>
                     {
                         entries.map((entry, index) => (
-                            <EntryComponent key={index} entry={entry} setEntry={setEntry} index={index}/>))
+                            <EntryComponent key={index} entry={entry} setEntry={setEntry} index={index} removeEntry={removeEntry} />))
                     }
                 </Grid>
             </Box>
